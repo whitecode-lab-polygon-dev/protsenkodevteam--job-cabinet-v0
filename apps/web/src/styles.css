@@ -1,0 +1,145 @@
+:root {
+  --bg: #0f1115;
+  --surface: #171a21;
+  --border: #262a35;
+  --text: #e8eaf2;
+  --muted: #98a0b5;
+  --accent: #4b3bff;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app__header {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+}
+
+.app__brand {
+  font-weight: 650;
+}
+
+.app__main {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.filters-panel {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown__button,
+.select {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dropdown__badge {
+  margin-left: 6px;
+  background: var(--accent);
+  border-radius: 999px;
+  padding: 0 6px;
+  font-size: 12px;
+}
+
+.dropdown__list {
+  position: absolute;
+  z-index: 2;
+  margin-top: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  min-width: 180px;
+}
+
+.dropdown__option {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 2px;
+}
+
+.vacancies-page__feed {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vacancy-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.vacancy-card__title {
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+
+.vacancy-card__company {
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+
+.vacancy-card__tags,
+.vacancy-page__tags,
+.vacancy-page__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tag {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.tag--stack {
+  color: var(--text);
+}
+
+.vacancy-card__salary {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+.skeleton {
+  display: block;
+  background: linear-gradient(90deg, #1c202a, #232836, #1c202a);
+  border-radius: 6px;
+  min-height: 12px;
+}
