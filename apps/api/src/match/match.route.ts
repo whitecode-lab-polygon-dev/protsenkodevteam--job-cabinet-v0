@@ -1,11 +1,43 @@
 import type { FastifyInstance } from 'fastify';
 
 import type { VacancyRepository } from '../vacancies/repository.js';
+import { computeMatch } from './score.js';
+import { findResumeById } from '../resumes/repository.js';
 
-// The scoring itself is not written yet. The route exists so the contract is visible from the
-// first day: POST /api/match answers a score and the gaps for a resume and a vacancy.
-export function registerMatchRoute(app: FastifyInstance, _repo: VacancyRepository): void {
-  app.post('/api/match', async (_request, reply) => {
-    return reply.code(501).send({ message: 'match scoring is not implemented yet' });
+interface MatchRequestBody {
+  resumeId: string;
+  vacancyIds: string[];
+}
+
+interface MatchResponseItem {
+  vacancyId: string;
+  score: number;
+  gaps: string;
+}
+
+export function registerMatchRoute(app: FastifyInstance, repo: VacancyRepository): void {
+  app.post<{ Body: MatchRequestBody }>('/api/match', async (request, reply) => {
+    const { resumeId, vacancyIds } = request.body;
+    const resume = await findResumeById(resumeId);
+
+    if (!resume) {
+      return reply.code(404).send({ message: 'resume not found' });
+    }
+
+    const results: MatchResponseItem[] = [];
+
+    for (const vacancyId of vacancyIds) {
+      const vacancy = await repo.findVacancyById(vacancyId);
+      const skills = await repo.findSkillsByVacancy(vacancyId);
+
+      if (!vacancy) {
+        continue;
+      }
+
+      const { score, gaps } = computeMatch(resume, { ...vacancy, skills });
+      results.push({ vacancyId, score, gaps });
+    }
+
+    return reply.send({ results });
   });
 }

@@ -50,13 +50,16 @@ describe('GET /api/cities', () => {
 });
 
 describe('POST /api/match', () => {
-  it('is registered and answers 501 until the scoring is written', async () => {
+  it('scores the vacancies of the request against the resume', async () => {
     const response = await app.inject({
       method: 'POST',
       url: '/api/match',
       payload: { resumeId: 'r-001', vacancyIds: ['v-001'] },
     });
 
-    expect(response.statusCode).toBe(501);
+    expect(response.statusCode).toBe(200);
+    const body = response.json<{ results: Array<{ vacancyId: string; score: number }> }>();
+    expect(body.results[0]?.vacancyId).toBe('v-001');
+    expect(body.results[0]?.score).toBe(100);
   });
 });
